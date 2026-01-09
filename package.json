@@ -40,7 +40,7 @@
     "n3": "^1.0.0"
   },
   "devDependencies": {
-    "@tsconfig/node18": "^5.0.0",
+    "@tsconfig/node18": "^18.2.2",
     "@types/node": "^20.0.0",
     "typescript": "^5.0.0"
   },
