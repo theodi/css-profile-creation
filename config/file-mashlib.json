@@ -2,7 +2,11 @@
   "comment": "A filesystem-based server with Mashlib (Pivot) as UI. Includes profile creation support. Based on https://github.com/SolidOS/css-mashlib/blob/ae21af4686f6c95c1f091cacd952831f272ea119/config/https-mashlib-subdomain-file.json",
   "@context": [
     "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^7.0.0/components/context.jsonld",
-    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/pivot/^1.0.0/components/context.jsonld"
+    "https://linkedsoftwaredependencies.org/bundles/npm/@solid/pivot/^1.0.0/components/context.jsonld",
+    {
+      "@base": "file:///Users/precious/Documents/Solid/css-profile-creation/",
+      "profile-component": "file:///Users/precious/Documents/Solid/css-profile-creation/dist/components/"
+    }
   ],
   "import": [
     "css:config/app/init/static-root.json",
@@ -15,7 +19,7 @@
     "css:config/http/static/default.json",
     "css:config/identity/access/public.json",
     "css:config/identity/email/default.json",
-    "./identity/handler/default-with-profile.json",
+    "./config/identity/handler/default-with-profile.json",
     "pivot:config/identity/oidc/default.json",
     "css:config/identity/ownership/token.json",
     "css:config/identity/pod/static.json",

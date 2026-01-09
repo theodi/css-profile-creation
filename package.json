@@ -25,10 +25,12 @@
     "node": ">=18.0"
   },
   "scripts": {
-    "build": "npm run build:ts && npm run build:components",
+    "build": "npm run build:ts && npm run build:components && npm run build:cleanup",
     "build:ts": "tsc",
     "build:components": "componentsjs-generator -s src -c dist/components -r profile-component -i .componentsignore",
+    "build:cleanup": "rm -rf node_modules/componentsjs-generator/node_modules",
     "clean": "rm -rf dist",
+    "start": "npm link @theodi/css-profile-creation 2>/dev/null || true && npm run build:cleanup && npx community-solid-server -c config/file-mashlib.json -f ./data",
     "lint": "echo 'Linting skipped for component package'",
     "lint:fix": "echo 'Linting skipped for component package'",
     "prepublishOnly": "npm run build"
@@ -37,13 +39,16 @@
     "@solid/community-server": "^7.0.0",
     "@solid/pivot": "^1.0.0",
     "componentsjs": "^5.0.0",
-    "componentsjs-generator": "^4.0.0",
     "n3": "^1.0.0"
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.2",
     "@types/node": "^20.0.0",
+    "componentsjs-generator": "^4.0.0",
     "typescript": "^5.0.0"
+  },
+  "overrides": {
+    "@comunica/core": "^2.10.0"
   },
   "repository": {
     "type": "git",
