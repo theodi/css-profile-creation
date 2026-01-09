@@ -27,7 +27,7 @@
   "scripts": {
     "build": "npm run build:ts && npm run build:components",
     "build:ts": "tsc",
-    "build:components": "componentsjs-generator -s dist -c dist/components -r profile-component -i .componentsignore",
+    "build:components": "componentsjs-generator -s src -c dist/components -r profile-component -i .componentsignore",
     "clean": "rm -rf dist",
     "lint": "echo 'Linting skipped for component package'",
     "lint:fix": "echo 'Linting skipped for component package'",
