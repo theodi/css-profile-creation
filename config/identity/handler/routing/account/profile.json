@@ -1,0 +1,26 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^7.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Handles profile creation for a user account",
+      "@id": "urn:solid-server:default:AccountProfileRouter",
+      "@type": "InteractionRouteHandler",
+      "route": {
+        "@id": "urn:solid-server:default:AccountProfileRoute",
+        "@type": "RelativePathInteractionRoute",
+        "base": { "@id": "urn:solid-server:default:AccountIdRoute" },
+        "relativePath": "profile/"
+      },
+      "source": {
+        "@type": "ViewInteractionHandler",
+        "source": {
+          "@id": "urn:solid-server:default:ProfileHandler",
+          "@type": "ProfileHandler",
+          "resourceStore": { "@id": "urn:solid-server:default:ResourceStore" },
+          "webIdStore": { "@id": "urn:solid-server:default:WebIdStore" },
+          "passwordStore": { "@id": "urn:solid-server:default:PasswordStore" }
+        }
+      }
+    }
+  ]
+}

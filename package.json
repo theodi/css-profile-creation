@@ -1,0 +1,59 @@
+{
+  "name": "@theodi/css-profile-creation",
+  "version": "1.0.0",
+  "description": "Profile creation component for Community Solid Server with modern UI and Mashlib integration",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "config",
+    "dist",
+    "templates",
+    "src"
+  ],
+  "lsd:module": "https://linkedsoftwaredependencies.org/bundles/npm/@theodi/css-profile-creation",
+  "lsd:components": "dist/components/components.jsonld",
+  "lsd:contexts": {
+    "https://linkedsoftwaredependencies.org/bundles/npm/@theodi/css-profile-creation/^1.0.0/components/context.jsonld": "dist/components/context.jsonld"
+  },
+  "lsd:importPaths": {
+    "https://linkedsoftwaredependencies.org/bundles/npm/@theodi/css-profile-creation/^1.0.0/components/": "dist/components/",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@theodi/css-profile-creation/^1.0.0/config/": "config/",
+    "https://linkedsoftwaredependencies.org/bundles/npm/@theodi/css-profile-creation/^1.0.0/templates/": "templates/"
+  },
+  "engines": {
+    "node": ">=18.0"
+  },
+  "scripts": {
+    "build": "npm run build:ts && npm run build:components",
+    "build:ts": "tsc",
+    "build:components": "componentsjs-generator -s src -c dist/components -r profile-component -i .componentsignore",
+    "clean": "rm -rf dist",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@solid/community-server": "^7.0.0",
+    "@solid/pivot": "^1.0.0",
+    "componentsjs": "^5.0.0",
+    "componentsjs-generator": "^4.0.0",
+    "n3": "^1.0.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theodi/css-profile-creation.git"
+  },
+  "keywords": [
+    "solid",
+    "community-solid-server",
+    "profile",
+    "mashlib",
+    "pivot"
+  ]
+}
+

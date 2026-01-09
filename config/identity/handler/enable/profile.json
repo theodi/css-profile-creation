@@ -1,0 +1,44 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^7.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Enable profile creation and management."
+    },
+
+    {
+      "@id": "urn:solid-server:default:InteractionRouteHandler",
+      "@type": "WaterfallHandler",
+      "handlers": [
+        { "@id": "urn:solid-server:default:AccountProfileRouter" }
+      ]
+    },
+
+    {
+      "@id": "urn:solid-server:default:AccountControlHandler",
+      "@type": "ControlHandler",
+      "controls": [{
+        "ControlHandler:_controls_key": "profile",
+        "ControlHandler:_controls_value": { "@id": "urn:solid-server:default:AccountProfileRoute" }
+      }]
+    },
+
+    {
+      "@id": "urn:solid-server:default:HtmlViewHandler",
+      "@type": "HtmlViewHandler",
+      "templates": [{
+        "@id": "urn:solid-server:default:CreateProfileHtml",
+        "@type": "HtmlViewEntry",
+        "filePath": "templates/identity/account/create-profile.html.ejs",
+        "route": { "@id": "urn:solid-server:default:AccountProfileRoute" }
+      }]
+    },
+    {
+      "@id": "urn:solid-server:default:AccountHtmlControlHandler",
+      "@type": "ControlHandler",
+      "controls": [{
+        "ControlHandler:_controls_key": "createProfile",
+        "ControlHandler:_controls_value": { "@id": "urn:solid-server:default:AccountProfileRoute" }
+      }]
+    }
+  ]
+}

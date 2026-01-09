@@ -1,0 +1,113 @@
+<button type="button" id="login-link" class="back-button">Back</button>
+<h1>Create account</h1>
+<form method="post" id="mainForm">
+  <p class="error" id="error"></p>
+
+  <fieldset>
+    <p>Choose the credentials you want to use to log in to this server in the future</p>
+    <ol>
+      <li>
+        <label for="email">Email:</label>
+        <input id="email" type="email" name="email" autofocus>
+      </li>
+      <li>
+        <label for="password">Password:</label>
+        <input id="password" type="password" name="password">
+      </li>
+      <li>
+        <label for="confirmPassword">Confirm password:</label>
+        <input id="confirmPassword" type="password" name="confirmPassword">
+      </li>
+    </ol>
+  </fieldset>
+
+  <p class="actions">
+    <button type="submit" name="submit" disabled>Register</button>
+  </p>
+</form>
+
+
+<script>
+  let passwordCreateUrl;
+  let oidcLocation;
+
+  (async() => {
+    let controls = await fetchControls('<%= idpIndex %>');
+
+    setRedirectClick('login-link', controls.html.password.login);
+
+    addPostListener(async() => {
+      validatePasswordConfirmation('password');
+
+      // Caching account in case there is an error adding the password login
+      if (!passwordCreateUrl) {
+        const res = await fetch(controls.account.create, {method: 'POST'});
+        const json = await res.json();
+        // Will only be defined if we are in a OIDC interaction
+        oidcLocation = json.location;
+
+        // Now with cookie
+        controls = await fetchControls('<%= idpIndex %>');
+        passwordCreateUrl = controls.password.create;
+      }
+
+      await postJsonForm(passwordCreateUrl);
+
+      // In case there is an OIDC location, we need to fetch it to force the OIDC library to go to the next step
+      if (oidcLocation) {
+        // Doing this after creating the password login to prevent incomplete accounts
+        await fetch(oidcLocation);
+      }
+
+      // Refresh controls to get latest account state
+      controls = await fetchControls('<%= idpIndex %>');
+
+      // Update button to show pod creation status
+      const submitBtn = mainForm.querySelector('button[type="submit"]');
+      submitBtn.textContent = 'Creating your pod...';
+
+      // Automatically create a pod with a default name based on email
+      // Extract username from email (part before @) for pod name
+      const email = document.getElementById('email').value;
+      const emailUsername = email.split('@')[0].toLowerCase().replace(/[^a-z0-9-]/g, '-');
+      const podName = emailUsername || `user-${Date.now()}`;
+
+      try {
+        // Create pod automatically
+        if (controls.account.pod) {
+          submitBtn.textContent = 'Creating your pod and WebID...';
+          const podRes = await fetch(controls.account.pod, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ name: podName }),
+          });
+
+          if (podRes.ok) {
+            // Pod created successfully, now redirect to profile creation
+            submitBtn.textContent = 'Redirecting to profile...';
+            if (controls.html.account.createProfile) {
+              location.href = controls.html.account.createProfile;
+              return;
+            }
+          } else {
+            // If pod creation fails, log error but continue
+            const errorText = await podRes.text();
+            console.error('Pod creation failed:', errorText);
+            throw new Error(`Failed to create pod: ${errorText}`);
+          }
+        }
+      } catch (error) {
+        // If pod creation fails, log error but continue to account page
+        console.error('Error creating pod:', error);
+        submitBtn.textContent = 'Registration complete, redirecting...';
+      }
+
+      // Fallback: redirect to account page if profile creation is not available
+      if (controls.html.account.createProfile) {
+        location.href = controls.html.account.createProfile;
+      } else {
+        location.href = controls.html.account.account;
+      }
+    });
+  })();
+</script>

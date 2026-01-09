@@ -1,0 +1,564 @@
+<button type="button" id="skip-link" class="back-button">Back</button>
+<h1>Create your profile</h1>
+<form method="post" id="mainForm" enctype="multipart/form-data">
+  <p class="error" id="error"></p>
+
+  <fieldset>
+    <p>Welcome! Tell us a bit about yourself. This information will be added to your WebID profile.</p>
+    
+    <h2>Basic Information</h2>
+    <ol>
+      <li>
+        <label for="name">Full Name:</label>
+        <input id="name" type="text" name="name" autofocus placeholder="Your full name">
+      </li>
+      <li>
+        <label for="email">Email:</label>
+        <input id="email" type="email" name="email" readonly disabled>
+      </li>
+      <li>
+        <label for="nickname">Nickname:</label>
+        <input id="nickname" type="text" name="nickname" placeholder="Short name for chats, etc.">
+      </li>
+      <li>
+        <label for="phone">Phone Number:</label>
+        <input id="phone" type="tel" name="phone" placeholder="+1-234-567-8900 (optional)">
+      </li>
+      <li>
+        <label for="photo">Profile Photo:</label>
+        <input id="photo" type="url" name="photo" placeholder="https://example.com/photo.jpg (optional)">
+        <small>Or upload an image file:</small>
+        <input id="photoFile" type="file" name="photoFile" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp">
+      </li>
+      <li>
+        <label for="homepage">Homepage:</label>
+        <input id="homepage" type="url" name="homepage" placeholder="https://yourwebsite.com (optional)">
+      </li>
+    </ol>
+
+    <h2>Contacts & Friends</h2>
+    <ol>
+      <li>
+        <label for="knows">Add Contacts/Friends (WebIDs, one per line):</label>
+        <textarea id="knows" name="knows" rows="3" placeholder="https://example.com/person/profile/card#me&#10;https://friend.example.com/profile/card#me"></textarea>
+        <small>Enter WebIDs of people you know, one per line. This will be stored as foaf:knows</small>
+      </li>
+    </ol>
+
+    <h2>Pronouns</h2>
+    <ol>
+      <li>
+        <label for="preferredSubjectPronoun">Subject Pronoun:</label>
+        <input id="preferredSubjectPronoun" type="text" name="preferredSubjectPronoun" placeholder="he/she/they...">
+      </li>
+      <li>
+        <label for="preferredObjectPronoun">Object Pronoun:</label>
+        <input id="preferredObjectPronoun" type="text" name="preferredObjectPronoun" placeholder="him/her/them...">
+      </li>
+      <li>
+        <label for="preferredRelativePronoun">Relative Pronoun:</label>
+        <input id="preferredRelativePronoun" type="text" name="preferredRelativePronoun" placeholder="his/hers/theirs...">
+      </li>
+    </ol>
+
+    <h2>Profile Style</h2>
+    <ol>
+      <li>
+        <label for="profileBackgroundColor">Background Color:</label>
+        <input id="profileBackgroundColor" type="color" name="profileBackgroundColor" value="#ffffff">
+      </li>
+      <li>
+        <label for="profileHighlightColor">Highlight Color:</label>
+        <input id="profileHighlightColor" type="color" name="profileHighlightColor" value="#000000">
+      </li>
+    </ol>
+
+    <h2>Languages</h2>
+    <ol>
+      <li>
+        <label for="knowsLanguage">Languages (one per line, as URIs):</label>
+        <textarea id="knowsLanguage" name="knowsLanguage" rows="3" placeholder="https://www.w3.org/ns/iana/language-code/en&#10;https://www.w3.org/ns/iana/language-code/fr"></textarea>
+        <small>Enter language URIs, one per line. Example: https://www.w3.org/ns/iana/language-code/en</small>
+      </li>
+    </ol>
+
+    <h2>Skills</h2>
+    <ol>
+      <li>
+        <label for="skills">Skills (one URI per line):</label>
+        <textarea id="skills" name="skills" rows="3" placeholder="https://ec.europa.eu/esco/skill/..."></textarea>
+        <small>Enter skill URIs from ESCO or other vocabularies, one per line.</small>
+      </li>
+    </ol>
+
+    <h2>Social Media Accounts</h2>
+    <div id="accountsContainer">
+      <div id="accountsList" class="entries-list"></div>
+      <div class="entry-form">
+        <div class="entry-form-fields">
+          <select id="accountTypeInput">
+            <option value="">Select account type</option>
+            <option value="BlueSkyAccount">Bluesky</option>
+            <option value="TwitterAccount">Twitter</option>
+            <option value="MastodonAccount">Mastodon</option>
+            <option value="LinkedInAccount">LinkedIn</option>
+            <option value="GithubAccount">GitHub</option>
+            <option value="FacebookAccount">Facebook</option>
+            <option value="InstagramAccount">Instagram</option>
+            <option value="OtherAccount">Other</option>
+          </select>
+          <input type="text" id="accountNameInput" placeholder="Account ID/Username">
+          <button type="button" id="addAccount">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <h2>Organizations & CV</h2>
+    <div id="organizationsContainer">
+      <div id="organizationsList" class="organizations-list"></div>
+      <div class="entry-form">
+        <div class="entry-form-fields">
+          <input type="text" id="organizationInput" placeholder="Organization name">
+          <input type="text" id="roleInput" placeholder="Role name">
+          <div class="checkbox-field">
+            <input type="checkbox" id="currentRoleCheckbox">
+            <label for="currentRoleCheckbox">Current Role</label>
+          </div>
+          <input type="date" id="startDateInput" placeholder="Start date">
+          <input type="date" id="endDateInput" placeholder="End date">
+          <textarea id="descriptionInput" placeholder="Description" rows="3"></textarea>
+          <button type="button" id="addOrganization">Add</button>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <p class="actions">
+    <button type="submit" name="submit" disabled>Save Profile</button>
+  </p>
+</form>
+
+<div class="hidden" id="response">
+  <h2>Profile Created!</h2>
+  <p>
+    Your profile has been saved successfully to your WebID profile document.
+  </p>
+  <p>You can update your profile information at any time from your account page.</p>
+  <p class="actions">
+    <button type="button" id="response-account-link">Continue to Account</button>
+  </p>
+</div>
+
+<script>
+  const { mainForm } = getElements('mainForm');
+  let accountCounter = 0;
+  let organizationCounter = 0;
+
+  // Convert file to base64
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Add account to list
+  function addAccountToList() {
+    const typeSelect = document.getElementById('accountTypeInput');
+    const nameInput = document.getElementById('accountNameInput');
+    const type = typeSelect.value;
+    const name = nameInput.value.trim();
+    
+    if (!type || !name) {
+      alert('Please fill in both account type and username');
+      return;
+    }
+    
+    const container = document.getElementById('accountsList');
+    const entry = document.createElement('div');
+    entry.className = 'entry-item';
+    entry.dataset.index = accountCounter;
+    entry.dataset.type = type;
+    entry.dataset.name = name;
+    
+    const typeLabel = typeSelect.options[typeSelect.selectedIndex].text;
+    entry.innerHTML = `
+      <div class="entry-content">
+        <span class="entry-type">${typeLabel}</span>
+        <span class="entry-name">${name}</span>
+      </div>
+      <button type="button" class="remove-entry" aria-label="Remove">×</button>
+    `;
+    
+    entry.querySelector('.remove-entry').addEventListener('click', () => {
+      entry.remove();
+    });
+    
+    container.appendChild(entry);
+    accountCounter++;
+    
+    // Clear form
+    typeSelect.value = '';
+    nameInput.value = '';
+  }
+
+  // Add organization to list
+  function addOrganizationToList() {
+    const orgInput = document.getElementById('organizationInput');
+    const roleInput = document.getElementById('roleInput');
+    const currentRoleCheckbox = document.getElementById('currentRoleCheckbox');
+    const startDateInput = document.getElementById('startDateInput');
+    const endDateInput = document.getElementById('endDateInput');
+    const descriptionInput = document.getElementById('descriptionInput');
+    
+    const org = orgInput.value.trim();
+    const role = roleInput.value.trim();
+    const isCurrentRole = currentRoleCheckbox.checked;
+    const roleType = isCurrentRole ? 'CurrentRole' : 'PastRole';
+    const startDate = startDateInput.value;
+    const endDate = isCurrentRole ? '' : endDateInput.value; // No end date for current role
+    const description = descriptionInput.value.trim();
+    
+    if (!org && !role) {
+      alert('Please fill in at least organization name or role name');
+      return;
+    }
+    
+    const container = document.getElementById('organizationsList');
+    const entry = document.createElement('div');
+    entry.className = 'organization-item';
+    entry.dataset.index = organizationCounter;
+    entry.dataset.organization = org;
+    entry.dataset.organizationName = org; // Store as name
+    entry.dataset.role = role;
+    entry.dataset.roleType = roleType;
+    entry.dataset.startDate = startDate;
+    entry.dataset.endDate = endDate;
+    entry.dataset.description = description;
+    
+    // Format dates for display
+    const formatDate = (dateStr) => {
+      if (!dateStr) return '';
+      const date = new Date(dateStr);
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                     'July', 'August', 'September', 'October', 'November', 'December'];
+      return `${months[date.getMonth()]} ${date.getFullYear()}`;
+    };
+    
+    const startDateFormatted = formatDate(startDate);
+    const endDateFormatted = formatDate(endDate);
+    const dateRange = isCurrentRole && startDateFormatted
+      ? `${startDateFormatted} - Present`
+      : startDateFormatted && endDateFormatted 
+        ? `${startDateFormatted} - ${endDateFormatted}`
+        : startDateFormatted 
+          ? `${startDateFormatted} - Present`
+          : endDateFormatted
+            ? `Until ${endDateFormatted}`
+            : '';
+    
+    const roleTypeLabel = isCurrentRole ? 'Current Role' : 'Past Role';
+    const duration = startDate && endDate 
+      ? (() => {
+          const start = new Date(startDate);
+          const end = new Date(endDate);
+          const years = end.getFullYear() - start.getFullYear();
+          const months = end.getMonth() - start.getMonth();
+          const totalMonths = years * 12 + months;
+          if (totalMonths < 12) return `${totalMonths} month${totalMonths !== 1 ? 's' : ''}`;
+          const y = Math.floor(totalMonths / 12);
+          const m = totalMonths % 12;
+          if (m === 0) return `${y} year${y !== 1 ? 's' : ''}`;
+          return `${y} year${y !== 1 ? 's' : ''} ${m} month${m !== 1 ? 's' : ''}`;
+        })()
+      : startDate && !endDate
+        ? 'Ongoing'
+        : '';
+    
+    entry.innerHTML = `
+      <div class="organization-content">
+        <div class="organization-header">
+          <div class="organization-title-section">
+            <h3 class="organization-role">${role || 'Role'}</h3>
+            <div class="organization-company">${org || 'Organization'}</div>
+            <div class="organization-meta">
+              ${roleTypeLabel !== 'Current Role' ? `<span class="role-type-badge">${roleTypeLabel}</span>` : ''}
+              ${dateRange ? `<span class="date-range">${dateRange}</span>` : ''}
+              ${duration ? `<span class="duration">${duration}</span>` : ''}
+            </div>
+          </div>
+          <button type="button" class="remove-entry" aria-label="Remove">×</button>
+        </div>
+        ${description ? `<div class="organization-description">${description}</div>` : ''}
+      </div>
+    `;
+    
+    entry.querySelector('.remove-entry').addEventListener('click', () => {
+      entry.remove();
+    });
+    
+    container.appendChild(entry);
+    organizationCounter++;
+    
+    // Clear form
+    orgInput.value = '';
+    roleInput.value = '';
+    currentRoleCheckbox.checked = false;
+    startDateInput.value = '';
+    endDateInput.value = '';
+    descriptionInput.value = '';
+    updateEndDateFieldVisibility();
+  }
+  
+  // Function to show/hide end date field based on checkbox
+  function updateEndDateFieldVisibility() {
+    const currentRoleCheckbox = document.getElementById('currentRoleCheckbox');
+    const endDateInput = document.getElementById('endDateInput');
+    const endDateLabel = endDateInput.previousElementSibling;
+    
+    if (currentRoleCheckbox.checked) {
+      endDateInput.disabled = true;
+      endDateInput.style.opacity = '0.5';
+      endDateInput.style.pointerEvents = 'none';
+      if (endDateLabel && endDateLabel.tagName === 'LABEL') {
+        endDateLabel.style.opacity = '0.5';
+      }
+    } else {
+      endDateInput.disabled = false;
+      endDateInput.style.opacity = '1';
+      endDateInput.style.pointerEvents = 'auto';
+      if (endDateLabel && endDateLabel.tagName === 'LABEL') {
+        endDateLabel.style.opacity = '1';
+      }
+    }
+  }
+
+  (async() => {
+    const controls = await fetchControls('<%= idpIndex %>');
+
+    // Set up navigation buttons
+    setRedirectClick('skip-link', controls.html.account.account);
+    setRedirectClick('response-account-link', controls.html.account.account);
+
+    // Set up add buttons
+    const addAccountBtn = document.getElementById('addAccount');
+    const addOrganizationBtn = document.getElementById('addOrganization');
+    
+    if (addAccountBtn) {
+      addAccountBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        addAccountToList();
+      });
+    }
+    
+    if (addOrganizationBtn) {
+      addOrganizationBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        addOrganizationToList();
+      });
+    }
+    
+    // Set up checkbox to toggle end date field
+    const currentRoleCheckbox = document.getElementById('currentRoleCheckbox');
+    if (currentRoleCheckbox) {
+      currentRoleCheckbox.addEventListener('change', updateEndDateFieldVisibility);
+
+      updateEndDateFieldVisibility();
+    }
+    
+    // Allow Enter key to add
+    const accountNameInput = document.getElementById('accountNameInput');
+    if (accountNameInput) {
+      accountNameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          addAccountToList();
+        }
+      });
+    }
+
+      // Load existing profile data if available
+      try {
+        const viewRes = await fetch(controls.account.profile, {
+          headers: { accept: 'application/json' }
+        });
+        if (viewRes.ok) {
+          const { profile } = await viewRes.json();
+          if (profile) {
+            // Populate form with existing data
+            if (profile.name) document.getElementById('name').value = profile.name;
+            if (profile.email) {
+              const emailField = document.getElementById('email');
+              emailField.value = profile.email;
+              emailField.style.backgroundColor = '#f0f0f0';
+            }
+            if (profile.nickname) document.getElementById('nickname').value = profile.nickname;
+            if (profile.phone) document.getElementById('phone').value = profile.phone;
+            if (profile.photo) document.getElementById('photo').value = profile.photo;
+            if (profile.homepage) document.getElementById('homepage').value = profile.homepage;
+            if (profile.preferredSubjectPronoun) document.getElementById('preferredSubjectPronoun').value = profile.preferredSubjectPronoun;
+            if (profile.preferredObjectPronoun) document.getElementById('preferredObjectPronoun').value = profile.preferredObjectPronoun;
+            if (profile.preferredRelativePronoun) document.getElementById('preferredRelativePronoun').value = profile.preferredRelativePronoun;
+            if (profile.profileBackgroundColor) document.getElementById('profileBackgroundColor').value = profile.profileBackgroundColor;
+            if (profile.profileHighlightColor) document.getElementById('profileHighlightColor').value = profile.profileHighlightColor;
+            if (profile.knowsLanguage && Array.isArray(profile.knowsLanguage)) {
+              document.getElementById('knowsLanguage').value = profile.knowsLanguage.join('\n');
+            }
+            if (profile.skills && Array.isArray(profile.skills)) {
+              document.getElementById('skills').value = profile.skills.join('\n');
+            }
+            if (profile.knows && Array.isArray(profile.knows)) {
+              document.getElementById('knows').value = profile.knows.join('\n');
+            }
+            // Populate organizations
+            if (profile.organizations && Array.isArray(profile.organizations)) {
+              profile.organizations.forEach(org => {
+                // Pre-fill the form and trigger add
+                if (org.organizationName || org.organization) {
+                  document.getElementById('organizationInput').value = org.organizationName || org.organization;
+                }
+                if (org.role) {
+                  document.getElementById('roleInput').value = org.role;
+                }
+                const currentRoleCheckbox = document.getElementById('currentRoleCheckbox');
+                if (org.roleType === 'CurrentRole') {
+                  currentRoleCheckbox.checked = true;
+                } else {
+                  currentRoleCheckbox.checked = false;
+                }
+                if (org.startDate) {
+                  document.getElementById('startDateInput').value = org.startDate;
+                }
+                if (org.endDate && org.roleType !== 'CurrentRole') {
+                  document.getElementById('endDateInput').value = org.endDate;
+                }
+                if (org.description) {
+                  document.getElementById('descriptionInput').value = org.description;
+                }
+               
+                addOrganizationToList();
+              });
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error loading profile:', error);
+      }
+
+    addPostListener(async() => {
+      const formData = new FormData(mainForm);
+      
+      // Build profile data object
+      const profileData = {};
+      
+      // Basic fields
+      if (formData.get('name')) profileData.name = formData.get('name').trim();
+      // Email is read-only, don't include it in the update
+      if (formData.get('nickname')) profileData.nickname = formData.get('nickname').trim();
+      if (formData.get('phone')) profileData.phone = formData.get('phone').trim();
+      if (formData.get('homepage')) profileData.homepage = formData.get('homepage').trim();
+      
+      // Pronouns
+      if (formData.get('preferredSubjectPronoun')) profileData.preferredSubjectPronoun = formData.get('preferredSubjectPronoun').trim();
+      if (formData.get('preferredObjectPronoun')) profileData.preferredObjectPronoun = formData.get('preferredObjectPronoun').trim();
+      if (formData.get('preferredRelativePronoun')) profileData.preferredRelativePronoun = formData.get('preferredRelativePronoun').trim();
+      
+      // Style
+      if (formData.get('profileBackgroundColor')) profileData.profileBackgroundColor = formData.get('profileBackgroundColor');
+      if (formData.get('profileHighlightColor')) profileData.profileHighlightColor = formData.get('profileHighlightColor');
+      
+      // Photo - handle file upload or URL
+      const photoFile = formData.get('photoFile');
+      if (photoFile && photoFile.size > 0) {
+        // Convert file to base64
+        const base64 = await fileToBase64(photoFile);
+        profileData.photo = base64;
+      } else if (formData.get('photo')) {
+        profileData.photo = formData.get('photo').trim();
+      }
+      
+      // Languages
+      const languages = formData.get('knowsLanguage');
+      if (languages && languages.trim()) {
+        profileData.knowsLanguage = languages.trim().split('\n').filter(l => l.trim()).map(l => l.trim());
+      }
+      
+      // Skills
+      const skills = formData.get('skills');
+      if (skills && skills.trim()) {
+        profileData.skills = skills.trim().split('\n').filter(s => s.trim()).map(s => s.trim());
+      }
+      
+      // Contacts/Friends
+      const knows = formData.get('knows');
+      if (knows && knows.trim()) {
+        profileData.knows = knows.trim().split('\n').filter(k => k.trim()).map(k => k.trim());
+      }
+      
+      // Social media accounts - collect from displayed entries
+      const accounts = [];
+      const accountEntries = document.querySelectorAll('#accountsList .entry-item');
+      accountEntries.forEach((entry) => {
+        const type = entry.dataset.type;
+        const name = entry.dataset.name;
+        if (type && name) {
+          accounts.push({
+            type: type,
+            accountName: name
+          });
+        }
+      });
+      if (accounts.length > 0) {
+        profileData.accounts = accounts;
+      }
+      
+      // Organizations - collect from displayed entries
+      const organizations = [];
+      const orgEntries = document.querySelectorAll('#organizationsList .organization-item');
+      orgEntries.forEach((entry) => {
+        const orgEntry = {};
+        const orgValue = entry.dataset.organization || entry.dataset.organizationName;
+        if (orgValue) {
+          // Check if it's a URL, if not use organizationName
+          if (orgValue.startsWith('http://') || orgValue.startsWith('https://')) {
+            orgEntry.organization = orgValue;
+          } else {
+            orgEntry.organizationName = orgValue;
+          }
+        }
+        if (entry.dataset.role) orgEntry.role = entry.dataset.role;
+        if (entry.dataset.roleType) orgEntry.roleType = entry.dataset.roleType;
+        if (entry.dataset.startDate) orgEntry.startDate = entry.dataset.startDate;
+        if (entry.dataset.endDate) orgEntry.endDate = entry.dataset.endDate;
+        if (entry.dataset.description) orgEntry.description = entry.dataset.description;
+        if (Object.keys(orgEntry).length > 0) {
+          organizations.push(orgEntry);
+        }
+      });
+      if (organizations.length > 0) {
+        profileData.organizations = organizations;
+      }
+
+      // Update button to show saving status
+      const submitBtn = mainForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Saving profile...';
+      submitBtn.disabled = true;
+
+      // Post profile data to the profile endpoint
+      const res = await postJson(controls.account.profile, profileData);
+      if (res.status >= 400) {
+        const errorData = await res.json();
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        throw new Error(errorData.message || 'Failed to save profile');
+      }
+
+      submitBtn.textContent = 'Profile saved!';
+      setVisibility('response', true);
+      setVisibility('mainForm', false);
+    });
+  })();
+</script>
