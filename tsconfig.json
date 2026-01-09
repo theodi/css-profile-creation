@@ -10,7 +10,13 @@
     "outDir": "dist",
     "preserveConstEnums": true,
     "sourceMap": true,
-    "stripInternal": true
+    "stripInternal": true,
+    "baseUrl": "src",
+    "paths": {
+      "../../../*": [ "../../node_modules/@solid/community-server/dist/*" ],
+      "../../*": [ "../../node_modules/@solid/community-server/dist/*" ],
+      "../*": [ "../../node_modules/@solid/community-server/dist/identity/interaction/*" ]
+    }
   },
   "include": [
     "src"
