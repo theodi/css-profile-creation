@@ -2,7 +2,7 @@
 
 This component provides profile creation functionality for Community Solid Server with Mashlib (Pivot) integration.
 
-## Quick Start
+## Quick Start (For End Users)
 
 1. **Install dependencies:**
 ```bash
@@ -17,6 +17,32 @@ npx community-solid-server -c node_modules/@theodi/css-profile-creation/config/f
 3. **Access the server:**
 - Main interface: http://localhost:3000/
 - Pods accessible via subdomains: http://username.localhost:3000/
+
+## Development Setup (For Contributors)
+
+If you're working on the source code of this component:
+
+1. **Install dependencies:**
+```bash
+npm install
+```
+
+2. **Build the component:**
+```bash
+npm run build
+```
+
+3. **Start the server:**
+```bash
+npm start
+```
+
+The `npm start` command will:
+- Link the package locally so Components.js can find it
+- Clean up conflicting dependencies
+- Start the Community Solid Server
+
+**Note:** When running from source, the package must be linked using `npm link` so that Components.js can resolve the `@theodi/css-profile-creation` module. The `npm start` script handles this automatically.
 
 ## What This Configuration Provides
 
